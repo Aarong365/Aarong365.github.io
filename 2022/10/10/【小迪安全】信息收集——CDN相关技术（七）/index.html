@@ -8,7 +8,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="icon" href="/img/ico2.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -18,15 +18,15 @@
   <meta name="author" content="阿荣">
   <meta name="keywords" content="">
   
-    <meta name="description" content="【小迪安全】信息收集——CDN相关技术 CDN的概念：CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。存在CDN技术会对我们的安全测试">
+    <meta name="description" content="【小迪安全】信息收集—CDN相关技术 CDN的概念：CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。存在CDN技术会对我们的安全测试造">
 <meta property="og:type" content="article">
-<meta property="og:title" content="【小迪安全】信息收集——CDN相关技术(七)">
+<meta property="og:title" content="【小迪安全】信息收集—CDN相关技术(七)">
 <meta property="og:url" content="https://aarong365.github.io/2022/10/10/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86%E2%80%94%E2%80%94CDN%E7%9B%B8%E5%85%B3%E6%8A%80%E6%9C%AF%EF%BC%88%E4%B8%83%EF%BC%89/index.html">
 <meta property="og:site_name" content="AaR0n9">
-<meta property="og:description" content="【小迪安全】信息收集——CDN相关技术 CDN的概念：CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。存在CDN技术会对我们的安全测试">
+<meta property="og:description" content="【小迪安全】信息收集—CDN相关技术 CDN的概念：CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户就近获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。存在CDN技术会对我们的安全测试造">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-10-10T04:55:42.633Z">
-<meta property="article:modified_time" content="2022-10-11T03:24:35.250Z">
+<meta property="article:modified_time" content="2022-10-13T14:50:39.103Z">
 <meta property="article:author" content="阿荣">
 <meta property="article:tag" content="信息安全">
 <meta name="twitter:card" content="summary_large_image">
@@ -35,7 +35,7 @@
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>【小迪安全】信息收集——CDN相关技术(七) - AaR0n9</title>
+  <title>【小迪安全】信息收集—CDN相关技术(七) - AaR0n9</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -73,7 +73,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"aarong365.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"aarong365.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -99,7 +99,7 @@
   <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
-      <strong>AaR0n9</strong>
+      <strong>AaR0n9&#39;s Blog</strong>
     </a>
 
     <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
@@ -200,7 +200,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="【小迪安全】信息收集——CDN相关技术(七)"></span>
+            <span id="subtitle" data-typed-text="【小迪安全】信息收集—CDN相关技术(七)"></span>
           
         </div>
 
@@ -223,7 +223,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          808 字
+          807 字
         
       </span>
     
@@ -272,12 +272,12 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">【小迪安全】信息收集——CDN相关技术(七)</h1>
+            <h1 style="display: none">【小迪安全】信息收集—CDN相关技术(七)</h1>
             
             
               <div class="markdown-body">
                 
-                <p><strong>【小迪安全】信息收集——CDN相关技术</strong></p>
+                <p><strong>【小迪安全】信息收集—CDN相关技术</strong></p>
 <p>CDN的概念：CDN的全称是Content Delivery Network，即内容分发网络。CDN是构建在现有网络基础之上的智能虚拟网络，依靠部署在各地的边缘服务器，通过中心平台的负载均衡、内容分发、调度等功能模块，使用户<strong>就近</strong>获取所需内容，降低网络拥塞，提高用户访问响应速度和命中率。CDN的关键技术主要有内容存储和分发技术。存在CDN技术会对我们的安全测试造成很大的影响。</p>
 <p>常见的CDN绕过技术有哪些？</p>
 <p>子域名查询：不同的域名可以设置的</p>
@@ -335,7 +335,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>【小迪安全】信息收集——CDN相关技术(七)</div>
+      <div>【小迪安全】信息收集—CDN相关技术(七)</div>
       <div>https://aarong365.github.io/2022/10/10/【小迪安全】信息收集——CDN相关技术（七）/</div>
     </div>
     <div class="license-meta">
