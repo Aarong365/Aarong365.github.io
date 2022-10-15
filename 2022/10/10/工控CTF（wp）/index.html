@@ -1,0 +1,735 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="阿荣">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="随意记录一下这次CTF的解题步骤。比较菜，做了几个杂项题。 所见非真赛题描述：一个刚入门的黑客在互联网进行大批量扫描后，发现某制造企业SCADA系统主机存在严重漏洞，并利用该漏洞远程操纵该主机修改SCADA管理员登录密码，导致该企业无法正常监控工程状态，黑客只留下了一张图片，你能帮助该企业在此图片中寻找管理员登录密码的线索吗？压缩包：HACK.zip有密码打不开，打开scada.jpg：binwa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GUET工控CTF">
+<meta property="og:url" content="https://aarong365.github.io/2022/10/10/%E5%B7%A5%E6%8E%A7CTF%EF%BC%88wp%EF%BC%89/index.html">
+<meta property="og:site_name" content="AaR0n9">
+<meta property="og:description" content="随意记录一下这次CTF的解题步骤。比较菜，做了几个杂项题。 所见非真赛题描述：一个刚入门的黑客在互联网进行大批量扫描后，发现某制造企业SCADA系统主机存在严重漏洞，并利用该漏洞远程操纵该主机修改SCADA管理员登录密码，导致该企业无法正常监控工程状态，黑客只留下了一张图片，你能帮助该企业在此图片中寻找管理员登录密码的线索吗？压缩包：HACK.zip有密码打不开，打开scada.jpg：binwa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/8cea58bd17734a59ab59bcee6abead37.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/e0cd21e8c6cb44f2b060e1e15e9f7ed3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/377471d75ed54e7c9daebcf84195ea2d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/661af74653a441a6b386a3f3393e2df2.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/15f66454f3ce45a4a11db1514eea48ca.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/34df4dd3f44b480197ce3f696cfe4d31.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/249d55cd815241378e34850f1d6f3ba5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/79ad4b5b188347d8ae778f008591793a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/a82f0689f77d4f5fb0399bfe20b9582f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/714fb2b76c1e4a75b62dbe933f632ff4.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/71a033fc1bb748a69dd0895153206ce3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/1ba1f64e542848c4b27d38d83d5952af.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_12,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c4798713969f4efe8b9bfcabbd03e604.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/62a7e8d32dd443d5826b88a077fc140d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6df3b93c965e4d7a9b8d9d1c566e6c07.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/8782b17308ec4c65b14965ecf9c33e81.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/f37f83c70ce54486a68fddddf2ffe99b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/4a4cc1a4b905416da71cdf20bfc9f1fc.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/6a2abf3bf8b1409a9fc6bab60b75e9f9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/bb59cf58ef2e44f4a69ab6d92769556a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/92f09b00a1414f5ca84952a070fcd3db.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/bffecbbcf01043bbb722e5759af2aa6a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/765c604b6804495f893aef274664bb89.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/7cb0fc2c7dbe4400a0b37be93b895281.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c2d1ba28944740a19ae9b3d29981315a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/c4ddbd287d7c4ac8a355eab3e8f08eac.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/9a3f310491e54d568a5ccdb71bd2aa94.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/25ac7b10231540628233b7dc5758dc15.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/632cc4dada8741ebbe58435a13476519.png#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/075d3083d48d49ab91c55af15ddb2f48.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/29605a614ec0437eb85d7728fcd3c294.png#pic_left">
+<meta property="article:published_time" content="2022-10-10T10:12:35.666Z">
+<meta property="article:modified_time" content="2022-10-11T03:25:02.406Z">
+<meta property="article:author" content="阿荣">
+<meta property="article:tag" content="信息安全">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/8cea58bd17734a59ab59bcee6abead37.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>GUET工控CTF - AaR0n9</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"aarong365.github.io","root":"/","version":"1.9.3","typing":{"enable":true,"typeSpeed":80,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>AaR0n9&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="GUET工控CTF"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-10 18:12" pubdate>
+          2022年10月10日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">GUET工控CTF</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <p>随意记录一下这次CTF的解题步骤。比较菜，做了几个杂项题。</p>
+<h3 id="所见非真"><a href="#所见非真" class="headerlink" title="所见非真"></a>所见非真</h3><p>赛题描述：<br>一个刚入门的黑客在互联网进行大批量扫描后，发现某制造企业SCADA系统主机存在严重漏洞，<br>并利用该漏洞远程操纵该主机修改SCADA管理员登录密码，导致该企业无法正常监控工程状态，<br>黑客只留下了一张图片，你能帮助该企业在此图片中寻找管理员登录密码的线索吗？<br>压缩包：<br><img src="https://img-blog.csdnimg.cn/8cea58bd17734a59ab59bcee6abead37.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>HACK.zip有密码打不开，打开scada.jpg：<br><img src="https://img-blog.csdnimg.cn/e0cd21e8c6cb44f2b060e1e15e9f7ed3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">binwalk分析发现有隐藏的压缩包：</p>
+<p>foremost分离发现：<br><img src="https://img-blog.csdnimg.cn/377471d75ed54e7c9daebcf84195ea2d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">试了一下发现是假的flag，然后也打不开HACK.zip。<br>继续对youwin这张图片进行分离发现1.1txt<br><img src="https://img-blog.csdnimg.cn/661af74653a441a6b386a3f3393e2df2.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>这个也不是最终的flag，试试发现能打开HACK.zip，得到最终的flag：<br><img src="https://img-blog.csdnimg.cn/15f66454f3ce45a4a11db1514eea48ca.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="异常的流量分析"><a href="#异常的流量分析" class="headerlink" title="异常的流量分析"></a>异常的流量分析</h3><p>小张在 进行工控企业检查评估工作中，发现了上位机被恶意感染。现已提取出上位机通信流量，通过流量异常获取FLAG，flag形式为 flag{}。<br>签到题。<br><img src="https://img-blog.csdnimg.cn/34df4dd3f44b480197ce3f696cfe4d31.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="黑客的攻击"><a href="#黑客的攻击" class="headerlink" title="黑客的攻击"></a>黑客的攻击</h3><p>题目描述：某工厂车间遭受到一位名为凯撒的黑客恶意攻击，导致该车间储存罐显示表跟罐内的实际数值显示不一样。影响企业的正常生产。</p>
+<p>根据题目打开流量包，题目提示是凯撒，想到可能是凯撒密码：<br>过滤modbus流量包<br><img src="https://img-blog.csdnimg.cn/249d55cd815241378e34850f1d6f3ba5.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">发现：<br><img src="https://img-blog.csdnimg.cn/79ad4b5b188347d8ae778f008591793a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><img src="https://img-blog.csdnimg.cn/a82f0689f77d4f5fb0399bfe20b9582f.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="黑客的大意"><a href="#黑客的大意" class="headerlink" title="黑客的大意"></a>黑客的大意</h3><p>题目：小张是一个黑客，由于刚入行不久，想去把所学习的知识进行实践，他进入了一个工厂，直连了PLC后，对PLC下发了操作指令，并对PLC进行了加密，小明在渗透工厂后，修改了PLC的连接密码，并给工厂留下了线索，请你根据当天工厂捕获的流量包，寻找小张留下的线索。</p>
+<p>改文件后缀wireshark分析：<br>通过追踪TCP流发现：<br><img src="https://img-blog.csdnimg.cn/714fb2b76c1e4a75b62dbe933f632ff4.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">flag{this_is_flag}</p>
+<h3 id="丢失的数据"><a href="#丢失的数据" class="headerlink" title="丢失的数据"></a>丢失的数据</h3><p>赛题描述：小明是一家制造厂的工程师，某天工厂遭遇了数据丢失，导致工厂无法统计当天所生产的零件数量，请你根据工厂断电前的流量包帮助工厂分析当天制造厂一共生产了多少的零件，正确答案为零件总数MD5值。<br>wireshark分析，过滤modbus.func_code &#x3D;&#x3D; 6<br><img src="https://img-blog.csdnimg.cn/71a033fc1bb748a69dd0895153206ce3.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>查看data项把十六进制转为十进制相加<br><img src="https://img-blog.csdnimg.cn/1ba1f64e542848c4b27d38d83d5952af.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_12,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>把相加结果转为md5值得到flag<br><img src="https://img-blog.csdnimg.cn/c4798713969f4efe8b9bfcabbd03e604.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="凯撒的秘密"><a href="#凯撒的秘密" class="headerlink" title="凯撒的秘密"></a>凯撒的秘密</h3><p>黑客凯撒最近很喜欢听一首歌，却不知道叫什么名字，你能根据小明给凯撒的线索，寻找出这首歌曲的名字吗？<br><img src="https://img-blog.csdnimg.cn/62a7e8d32dd443d5826b88a077fc140d.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>根据题目信息，发现又是凯撒密码加密：<br><img src="https://img-blog.csdnimg.cn/6df3b93c965e4d7a9b8d9d1c566e6c07.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>16进制转字符串<br><img src="https://img-blog.csdnimg.cn/8782b17308ec4c65b14965ecf9c33e81.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="工程的秘密"><a href="#工程的秘密" class="headerlink" title="工程的秘密"></a>工程的秘密</h3><p>赛题描述：黑客在渗透了某工厂的主机后，删除了工程信息，并给企业留下了备份文件，但不巧的是，黑客设置了一个恢复密码，请你帮助企业恢复工程，并找到黑客留下的信息.<br>这题需要的工具为FC组态软件：<br>下载好后对pcz文件进行恢复，发现有密码加密：<br><img src="https://img-blog.csdnimg.cn/f37f83c70ce54486a68fddddf2ffe99b.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>可能为弱密码加密，多试试几个简单的密码，试了一会之后发现密码是123123，成功恢复工程文件，再点击开发，进入工程点击用户设置发现flag：<br><img src="https://img-blog.csdnimg.cn/4a4cc1a4b905416da71cdf20bfc9f1fc.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="S7协议分析"><a href="#S7协议分析" class="headerlink" title="S7协议分析"></a>S7协议分析</h3><p>赛题描述：在工控网络中，工业协议中存在异常数据。请通过流量中的数据找寻 flag。<br>wireshark分析，直接查找关键字flag，发现：<br><img src="https://img-blog.csdnimg.cn/6a2abf3bf8b1409a9fc6bab60b75e9f9.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="轻松时刻"><a href="#轻松时刻" class="headerlink" title="轻松时刻"></a>轻松时刻</h3><p>题目：你可以把这个当做是一个签到题，好好放松一下吧，寻找音乐中的宝藏。<br>打开题目发现是一个MP3分件和一个加密的压缩包，想到是MP3隐写。<br>打开Audacity，分析发现<br><img src="https://img-blog.csdnimg.cn/bb59cf58ef2e44f4a69ab6d92769556a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">Password：Callalll<br>打开压缩包：<br><img src="https://img-blog.csdnimg.cn/92f09b00a1414f5ca84952a070fcd3db.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="打不开的压缩包"><a href="#打不开的压缩包" class="headerlink" title="打不开的压缩包"></a>打不开的压缩包</h3><p>t题目：小明交给小白一个压缩包，说里面有重要的秘密，请小明用自己的方式打开，小明打开后发现是一个加密的压缩包，但无论如何也打不开，你能帮助小明把压缩包解开么。<br>010打开查看文件头，是一个压缩包：<br><img src="https://img-blog.csdnimg.cn/bffecbbcf01043bbb722e5759af2aa6a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>先试着改文件后缀打开看看，直接看到flag</p>
+<p>后面题目提示是说是压缩包伪加密，没想到这样直接就能得到flag。<br><img src="https://img-blog.csdnimg.cn/765c604b6804495f893aef274664bb89.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="失控的遥控"><a href="#失控的遥控" class="headerlink" title="失控的遥控"></a>失控的遥控</h3><p>赛题描述：某公司对对新建变电站进行测试,通过该变电站监控后台进行遥控测试,遥控试验发生几次遥控失败，请对抓取的遥控试验流量数据包进行协议解析并找出隐藏flag信息。<br>过滤IEC数据包后，发现这个字符有点奇怪，通过排序，点开不同的数据包把这几个字符拼接得到flag<br><img src="https://img-blog.csdnimg.cn/7cb0fc2c7dbe4400a0b37be93b895281.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>得到 flag{gongkongaq_isflag}</p>
+<h3 id="病毒文件分析"><a href="#病毒文件分析" class="headerlink" title="病毒文件分析"></a>病毒文件分析</h3><p>题目：某工厂中上位机受到勒索病毒攻击，重要数据被加密，请将重要数据进行解密<br>发现是ganddcrad病毒<br><img src="https://img-blog.csdnimg.cn/c2d1ba28944740a19ae9b3d29981315a.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>百度下载解密工具进行解密得到flag。</p>
+<h3 id="OPC协议分析"><a href="#OPC协议分析" class="headerlink" title="OPC协议分析"></a>OPC协议分析</h3><p>一个黑客名叫ICSBACION，他是普莱费尔的忠实爱好者，这名黑客有一天在工控环境中插入了恶意数据并以自己的名字当做标签，请您帮助进行查找出协议数据。<br>打开数据包，用科来网络分析系统进行分析，发现异常数据包<br><img src="https://img-blog.csdnimg.cn/c4ddbd287d7c4ac8a355eab3e8f08eac.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述">查看8805数据包发现：<br><img src="https://img-blog.csdnimg.cn/9a3f310491e54d568a5ccdb71bd2aa94.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>题目提示普莱费尔，百度一下是个密码，解密得到，密钥是ICSBACION<br><img src="https://img-blog.csdnimg.cn/25ac7b10231540628233b7dc5758dc15.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="sign-in"><a href="#sign-in" class="headerlink" title="sign_in"></a>sign_in</h3><p>发现一个文件，丢到kali进行分析，发现是ELF，linux下的可执行文件<br><img src="https://img-blog.csdnimg.cn/632cc4dada8741ebbe58435a13476519.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>IDA进行分析：发现只要输入这一串字符，就可以输出flag<br><img src="https://img-blog.csdnimg.cn/075d3083d48d49ab91c55af15ddb2f48.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAX0FhUm9uZ18=,size_20,color_FFFFFF,t_70,g_se,x_16#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>kali中执行:<br><img src="https://img-blog.csdnimg.cn/29605a614ec0437eb85d7728fcd3c294.png#pic_left" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/CTF/" class="category-chain-item">CTF</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BF%A1%E6%81%AF%E5%AE%89%E5%85%A8/">#信息安全</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>GUET工控CTF</div>
+      <div>https://aarong365.github.io/2022/10/10/工控CTF（wp）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>阿荣</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月10日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2022/10/10/ctfshow%E6%91%86%E7%83%82%E6%9D%AF--%E7%BB%80%E9%9D%92%E4%B9%8B%E6%8B%B3/" title="ctfshow摆烂杯--绀青之拳">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">ctfshow摆烂杯--绀青之拳</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2022/10/10/KON-BOOT%E7%BB%95%E8%BF%87window%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81%EF%BC%88kon-boot%202.7%EF%BC%89/" title="kon-boot绕过windows登录">
+                        <span class="hidden-mobile">kon-boot绕过windows登录</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  <article id="comments" lazyload>
+    
+
+  </article>
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
